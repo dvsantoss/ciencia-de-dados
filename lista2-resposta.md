@@ -290,3 +290,358 @@ arr = np.array([1, 2, 3, 4])
 [x * 2 for x in lista]   # lista Python: precisa de laço → [2, 4, 6, 8]
 arr * 2                  # NumPy: operação vetorizada → array([2, 4, 6, 8])
 ```
+
+## Questão 5
+
+**Enunciado:** Qual dos itens a seguir NÃO é característica do ambiente Jupyter:
+
+a) permite execução iterativa por meio do IPython
+b) é baseado no modelo de desenvolvimento edição-compilação-execução
+c) permite integrar equações em LaTex e tags HTML em células Markdown
+d) O Google Colab é baseado em Jupyter
+
+**Resposta: b) é baseado no modelo de desenvolvimento edição-compilação-execução**
+
+### Explicação
+
+A questão pede o que **NÃO** é característica do Jupyter.
+
+- **a)** → É característica. O Jupyter nasceu do projeto **IPython** (*Interactive Python*), e o IPython é o *kernel* que executa o código Python nos notebooks. A execução é **interativa e incremental**: cada célula roda separadamente, o resultado aparece logo abaixo e as variáveis ficam na memória para as próximas células.
+- **b)** → **NÃO é característica** (resposta). O ciclo **editar → compilar → executar** é típico de linguagens compiladas como C e Java: escreve-se o programa inteiro, compila-se e só então ele é executado. O Jupyter segue o modelo **REPL** (*Read-Eval-Print Loop*: ler, avaliar, mostrar o resultado e repetir), sem etapa de compilação separada. É isso que o torna bom para exploração de dados.
+- **c)** → É característica. Células **Markdown** aceitam texto formatado, equações em **LaTeX** (ex.: `$y = ax + b$`) e **tags HTML**, permitindo misturar código, resultados e documentação num mesmo notebook.
+- **d)** → É característica. O **Google Colab** é um ambiente de notebooks Jupyter hospedado na nuvem do Google (com GPU/TPU gratuitas) e usa o mesmo formato de arquivo `.ipynb`.
+
+### Conceito-chave
+
+| Modelo | Como funciona | Exemplo |
+|---|---|---|
+| Edição-compilação-execução | Escreve o programa inteiro → compila → executa | C, Java |
+| Interativo (REPL) | Executa trecho a trecho e vê o resultado na hora | Jupyter, IPython, terminal do Python |
+
+## Questão 6
+
+**Enunciado:** Sobre arquivos de imagem enquanto fontes de dados, podemos afirmar que:
+
+a) são dados semi-estruturados, de esquema flexível
+b) dado ser um dado binário, embora ineficiente, pode ser salvo como um tipo binData no mongodb
+c) são dados não estruturados, com um esquema rígido
+d) em nenhuma hipótese necessitam ser transformados em dados estruturados para análise, após o PDI
+
+**Resposta: b) dado ser um dado binário, embora ineficiente, pode ser salvo como um tipo binData no mongodb**
+
+### Explicação
+
+- **a)** → Errada. Imagens são dados **não estruturados**. Dados **semiestruturados** são os que têm marcações que descrevem a própria estrutura, como JSON, XML e HTML.
+- **b)** → Correta. Uma imagem é um arquivo **binário**, e o BSON (formato interno do MongoDB) tem o tipo **`BinData`** (*binary data*) para guardar bytes brutos dentro de um documento. É possível, mas **ineficiente**: o documento fica pesado, cada consulta carrega a imagem inteira e há o limite de **16 MB por documento** (acima disso é preciso usar o **GridFS**). Na prática, costuma-se guardar a imagem em disco ou num serviço de armazenamento de arquivos e salvar no banco só o **caminho/URL** e os metadados.
+- **c)** → Errada. Imagens são, sim, **não estruturadas**, mas a segunda parte está errada: dados não estruturados **não têm esquema** (nem rígido, nem flexível). Esquema rígido é característica de dados **estruturados**, como as tabelas de um banco relacional.
+- **d)** → Errada. Depois do **PDI** (Processamento Digital de Imagens), normalmente é **preciso** transformar a imagem em dados estruturados para analisá-la: extrair **características** (*features*) como cor média, bordas, contagem de objetos ou rótulos de classificação, organizando-as numa tabela ou vetor numérico que os modelos conseguem usar.
+
+### Conceito-chave
+
+| Tipo de dado | Esquema | Exemplos |
+|---|---|---|
+| Estruturado | Rígido, definido antes (tabelas) | Tabelas SQL, planilhas |
+| Semiestruturado | Flexível, descrito pelo próprio dado | JSON, XML, HTML, documentos MongoDB |
+| Não estruturado | Sem esquema | Imagens, áudio, vídeo, texto livre |
+
+## Questão 7
+
+**Enunciado:** Quais são os 3Vs mais importantes do Big Data?
+
+a) volume, velocidade, viabilidade
+b) volume, velocidade, variedade
+c) valor, velocidade, viabilidade
+d) velocidade, variedade, valor
+
+**Resposta: b) volume, velocidade, variedade**
+
+### Explicação
+
+Os **3Vs** clássicos do Big Data foram propostos por Doug Laney (analista do META Group, hoje Gartner) em 2001 e são as três características que tornam os dados difíceis de tratar com as ferramentas tradicionais:
+
+- **Volume** → a **quantidade** enorme de dados gerada e armazenada (terabytes, petabytes...).
+- **Velocidade** → a **rapidez** com que os dados são gerados e precisam ser processados, muitas vezes em tempo real (ex.: sensores, redes sociais, transações).
+- **Variedade** → a diversidade de **tipos e formatos**: dados estruturados (tabelas), semiestruturados (JSON, XML) e não estruturados (imagens, vídeos, texto).
+
+Com o tempo, outros Vs foram acrescentados, como **Veracidade** (confiabilidade e qualidade dos dados) e **Valor** (utilidade dos dados para o negócio), formando os "5Vs". Mas os três **originais e mais importantes** são volume, velocidade e variedade.
+
+Por que as outras estão erradas:
+
+- **a)** e **c)** → **Viabilidade** não faz parte dos Vs clássicos.
+- **d)** → Troca **volume**, o V mais básico do Big Data, por **valor**, que é um dos Vs acrescentados depois.
+
+## Questão 8
+
+**Enunciado:** Em um banco de dados o que é missing data, usualmente preenchido com NaN ao importar dados para um dataframe em Pandas?
+
+a) o mesmo que outlier
+b) dados faltantes, toda e qualquer falha na obtenção de respostas sobre os elementos selecionados e designados para pertencerem à amostra
+c) ocorre quando não há falta de informação no banco de dados
+d) são dados antigos e ultrapassados
+
+**Resposta: b) dados faltantes, toda e qualquer falha na obtenção de respostas sobre os elementos selecionados e designados para pertencerem à amostra**
+
+### Explicação
+
+*Missing data* (dados faltantes ou ausentes) é quando um elemento da amostra **deveria** ter um valor num campo, mas esse valor não foi obtido. Por exemplo: a pessoa não respondeu uma pergunta do questionário, um sensor falhou ou houve erro na digitação ou importação. Ao carregar os dados no Pandas, essas lacunas aparecem como **`NaN`** (*Not a Number*).
+
+- **a)** → Errada. **Outlier** é um valor que **existe**, mas é muito diferente dos demais (ex.: uma idade de 150 anos). No *missing data*, o valor **não existe**.
+- **b)** → Correta. É exatamente a definição: qualquer falha em obter a informação de um elemento que faz parte da amostra.
+- **c)** → Errada. É o contrário: *missing data* ocorre justamente quando **há** falta de informação.
+- **d)** → Errada. Dados antigos ou desatualizados têm valor, só que ultrapassado. Isso é um problema de **atualidade** dos dados, não de ausência.
+
+### Tratamento no Pandas
+
+```python
+import pandas as pd
+
+df = pd.read_csv("alunos.csv")
+
+df.isna().sum()                       # quantos valores faltam em cada coluna
+df.dropna()                           # remove as linhas com algum NaN
+df["mediaGeral"].fillna(df["mediaGeral"].mean())  # preenche com a média da coluna
+```
+
+A escolha entre **remover** e **preencher** (imputar) depende de quantos dados faltam e de por que faltam: remover muitas linhas pode enviesar a análise.
+
+## Questão 9
+
+**Enunciado:** Qual seria uma boa definição para cientista de dados:
+
+a) alguém com competências em programação e estatística, sem necessariamente conhecimento do negócio
+b) alguém que embora conheça o negócio muito bem e programe tão bem quanto, não conhece técnicas estatísticas nem interpreta minimamente os resultados
+c) alguém que equilibra a seleção de técnicas de programação e técnicas estatísticas, aplicadas a um negócio com o qual procura interagir com especialistas para melhor proposta de solução
+d) alguém que domina os bancos de dados NoSQL
+
+**Resposta: c)**
+
+### Explicação
+
+O cientista de dados fica na interseção de **três áreas**: **programação/computação**, **estatística/matemática** e **conhecimento do negócio (domínio)**. É o famoso diagrama de Venn de Drew Conway.
+
+- **a)** → Errada. Sem conhecimento do negócio, a pessoa não sabe quais perguntas fazer nem como interpretar os resultados no contexto real.
+- **b)** → Errada. Sem estatística, não há como escolher técnicas adequadas nem avaliar se os resultados são confiáveis.
+- **c)** → Correta. Equilibra programação e estatística aplicadas a um negócio, e **interage com especialistas** do domínio para chegar à melhor solução.
+- **d)** → Errada. Dominar NoSQL é só uma habilidade técnica entre várias; não define a profissão.
+
+## Questão 10
+
+**Enunciado:** Sobre conceitos gerais da área de ciências de dados, marque V ou F. Quando for F, justifique:
+
+**Resposta:**
+
+| # | Afirmativa | V/F |
+|---|---|---|
+| 1 | Aprendizagem de máquina (ML) e mineração de dados (DM) podem ser consideradas a mesma coisa no âmbito de ciência de dados | **F** |
+| 2 | Técnicas como clusterização, detecção de anomalias e classificação são normalmente associadas ao resultado de técnicas de ML | **V** |
+| 3 | Uma nuvem de palavras é uma técnica gráfica simples de realizar análise exploratória de dados | **V** |
+| 4 | A ciência de dados não é apenas ML e DM, sendo estas parte da etapa de transformação no ciclo de vida do dado | **F** |
+| 5 | O termo ETL (Extração, Transformação e Carga) está presente na etapa de produção do ciclo do dado, sendo processo comum em data warehouses | **F** |
+| 6 | Dashboard é uma técnica de visualização de resultados | **V** |
+| 7 | Estão entre os motores para o desenvolvimento da ciência de dados: IaaS, PaaS e SaaS | **V** |
+| 8 | O MongoDB Atlas é um exemplo de DBaaS no contexto cloud computing | **V** |
+| 9 | O sistema de arquivos distribuído HDFS é a base para a plataforma Hadoop e para o Google File System | **F** |
+
+### Explicação
+
+O **ciclo de vida do dado** visto em aula tem as etapas: **Produção → Armazenamento → Transformação → Análise → Descarte**.
+
+1. **F** → ML e DM são áreas **relacionadas, mas diferentes**. Pelos slides: **ML** é o *projeto e avaliação de algoritmos para extração de padrões a partir de dados*; **DM** é a *análise de dados estruturados, usualmente com ênfase comercial*. A mineração de dados **usa** algoritmos de ML, mas não é a mesma coisa.
+2. **V** → Clusterização (agrupar clientes parecidos), detecção de anomalias (fraudes, *outliers*) e classificação (dizer a qual classe um dado pertence) são tarefas típicas resolvidas com técnicas de ML.
+3. **V** → A nuvem de palavras mostra as palavras mais frequentes de um texto em tamanho maior. É uma forma simples e visual de explorar dados textuais.
+4. **F** → A primeira parte está certa (ciência de dados abrange todo o ciclo, não só ML e DM), mas ML e DM fazem parte da etapa de **Análise**, não da de Transformação. A Análise vai *de uma simples consulta SQL até modelos de classificação com redes neurais*.
+5. **F** → O ETL fica na etapa de **Transformação**, que converte o dado do modelo de armazenamento para um modelo próprio para consumo/análise (ex.: carga em *data warehouses*). A etapa de **Produção** é a geração do dado: texto digitado, sensores, fotos, cliques, GPS etc.
+6. **V** → *Dashboards* (painéis) reúnem gráficos e indicadores para apresentar os resultados de forma visual.
+7. **V** → Nos slides, os motores da ciência de dados incluem **virtualização**, **sistemas distribuídos** e **computação em nuvem (IaaS, PaaS, SaaS)**, que deram acesso barato a infraestrutura de armazenamento e processamento.
+8. **V** → O **MongoDB Atlas** é o MongoDB oferecido como serviço gerenciado na nuvem: **DBaaS** (*Database as a Service*). O provedor cuida da instalação, *backup* e escalabilidade.
+9. **F** → A ordem está invertida: o **Google File System (GFS)**, de 2003, é que serviu de **inspiração** para o **HDFS**. O HDFS é a base do Hadoop, mas não do GFS.
+
+## Questão 11
+
+**Enunciado:** Para indexação de páginas web, o Google usa o MapReduce. Sobre a ação de Map, pode-se afirmar que:
+
+a) agrega os resultados, gerando um resultado final
+b) é executada em nós distribuídos, contabilizando e separando itens comuns
+c) é executado em memória, tal como o Spark
+d) não pode ser implementado em mongoDB
+
+**Resposta: b) é executada em nós distribuídos, contabilizando e separando itens comuns**
+
+### Explicação
+
+O MapReduce divide o processamento em duas fases:
+
+- **Map** → cada nó do *cluster* processa **sua parte** dos dados em paralelo e gera pares `<chave, valor>`. Na contagem de palavras, por exemplo, cada ocorrência vira `<palavra, 1>`. Depois esses pares são **agrupados por chave** (fase *shuffle*).
+- **Reduce** → recebe os pares agrupados e **agrega** os valores de cada chave, gerando o resultado final (ex.: `<Dad, 2>`).
+
+- **a)** → Errada. Agregar e gerar o resultado final é papel do **Reduce**.
+- **b)** → Correta. O Map roda de forma distribuída nos nós, contabilizando e separando os itens por chave.
+- **c)** → Errada. O MapReduce do Hadoop grava os resultados intermediários em **disco**. Processar **em memória** é justamente a vantagem do **Spark** sobre o MapReduce.
+- **d)** → Errada. O MongoDB tem o comando `mapReduce` (hoje considerado obsoleto e substituído pelo *aggregation pipeline*, mas existe).
+
+## Questão 12
+
+**Enunciado:** Tenho um problema com variável resposta numérica e variável independente numérica. Qual técnica não se aplica para a construção de um modelo de predição?
+
+a) regressão linear
+b) rede neural
+c) random forest
+d) regressão logística
+
+**Resposta: d) regressão logística**
+
+### Explicação
+
+A **regressão logística** é usada quando a variável **resposta é categórica** (ex.: sim/não, spam/não spam, doente/saudável). Ela calcula a **probabilidade** de o dado pertencer a uma classe, por isso não serve para prever um valor numérico.
+
+As demais se aplicam a resposta numérica com entrada numérica:
+
+- **Regressão linear** → a técnica clássica para esse caso (ex.: preço em função da quantidade vendida).
+- **Rede neural** e **Random Forest** → técnicas gerais, que funcionam tanto para classificação quanto para regressão.
+
+| Resposta (Y) \ Entrada (X) | Numérica | Categórica |
+|---|---|---|
+| **Numérica** | Regressão linear, árvore, random forest, rede neural | ANOVA, árvore, random forest, rede neural |
+| **Categórica** | **Regressão logística**, árvore, random forest, rede neural | **Regressão logística**, árvore, random forest, rede neural |
+
+## Questão 13
+
+**Enunciado:** Uma análise de variância seria aplicável à variáveis de entrada do tipo:
+
+a) categóricas
+b) numéricas
+c) mistas
+d) n.d.a
+
+**Resposta: a) categóricas**
+
+### Explicação
+
+A **ANOVA** (*Analysis of Variance*) é um teste de hipóteses que compara as **médias de uma variável numérica entre grupos**. Os grupos são definidos por uma variável de entrada **categórica**. Exemplo dos slides: *gastos no cartão de crédito (numérica) em função do gênero (categórica)*.
+
+- **b)** → Errada. Com entrada numérica e resposta numérica, usa-se **regressão linear**.
+- **c)** → Errada. Com entradas **mistas** (categóricas e numéricas), usa-se a **ANCOVA** (*Analysis of Covariance*). Exemplo: salário em função de faixa etária, gênero e anos de empresa.
+
+## Questão 14
+
+**Enunciado:** São variáveis quantitativas discretas (pode haver mais de uma opção):
+
+a) números de filho de um casal
+b) altura de uma pessoa
+c) número de clientes num banco
+d) número de poltronas num cinema
+
+**Resposta: a), c) e d)**
+
+### Explicação
+
+- **Quantitativa discreta** → resulta de uma **contagem**, com valores inteiros que se pode enumerar (0, 1, 2, 3...). Não existe "2,5 filhos".
+- **Quantitativa contínua** → resulta de uma **medição** e pode assumir qualquer valor num intervalo (1,72 m; 1,725 m...).
+
+- **a)** número de filhos → **discreta** (contagem).
+- **b)** altura → **contínua** (medição), por isso não entra.
+- **c)** número de clientes → **discreta** (contagem).
+- **d)** número de poltronas → **discreta** (contagem).
+
+## Questão 15
+
+**Enunciado:** Na equação Y = ax + b, Y pode ser chamada de:
+
+a) variável objetivo, variável instrumental, variável resposta, variável dependente
+b) variável discordiana, variável pergunta, variável dependente
+c) variável objetivo, variável target, variável resposta e variável dependente
+
+**Resposta: c) variável objetivo, variável target, variável resposta e variável dependente**
+
+### Explicação
+
+Em `Y = ax + b`, o **Y** é o que se quer prever. Ele **depende** do valor de `x`. Os nomes usados para ele são:
+
+- **Y** → variável **resposta**, **dependente**, **objetivo** ou **target**.
+- **x** → variável **independente**, **de entrada**, **explicativa**, **preditora** ou **atributo**.
+
+- **a)** → Errada. **Variável instrumental** é um conceito da econometria, usado para lidar com certos problemas de variáveis explicativas. Não é sinônimo de variável resposta.
+- **b)** → Errada. "Variável discordiana" e "variável pergunta" não são termos usados.
+
+## Questão 16
+
+**Enunciado:** São variáveis qualitativas ordinais:
+
+a) classe social
+b) voltagem elétrica
+c) cor dos olhos
+d) time de futebol
+
+**Resposta: a) classe social**
+
+### Explicação
+
+- **Qualitativa ordinal** → categorias que têm uma **ordem natural** (ex.: pequeno < médio < grande).
+- **Qualitativa nominal** → categorias **sem ordem** entre si.
+
+- **a)** classe social (A, B, C, D, E; ou baixa, média, alta) → **ordinal**, porque existe uma ordem entre as categorias.
+- **b)** voltagem elétrica → **quantitativa** (é um número medido), não qualitativa.
+- **c)** cor dos olhos → **nominal**: azul não é "maior" que castanho.
+- **d)** time de futebol → **nominal**: não há ordem natural entre os times.
+
+## Questão 17
+
+**Enunciado:** Sobre a etapa de modelagem, um modelo pode ser construído vários objetivos, menos o de:
+
+a) ordenação
+b) estimativa
+c) previsão
+d) decisão
+
+**Resposta: a) ordenação**
+
+### Explicação
+
+Um modelo é *uma especificação de relação matemática (ou probabilística) entre variáveis diferentes*: a partir das variáveis de entrada, ele produz uma resposta. Os exemplos dos slides mostram os objetivos possíveis:
+
+- **Estimativa** → probabilidade de ganhar; probabilidade de um *banner* ser clicado.
+- **Previsão** → lucro nos próximos anos; que time ganhará.
+- **Decisão** → a mensagem é spam ou não? A transação é fraudulenta? Qual o impacto da ação A ou B no processo X?
+
+**Ordenação** (colocar dados em ordem) é uma operação simples de manipulação de dados, feita com um `ORDER BY` ou um `sort()`. Não exige construir um modelo.
+
+## Questão 18
+
+**Enunciado:** Sobre modelos de armazenamento, julgue os itens a seguir em V e F. Se for F, justifique:
+
+**Resposta:**
+
+| # | Afirmativa | V/F |
+|---|---|---|
+| 1 | O modelo baseado em grafos atual remete ao modelo hierárquico dos anos 60 | **F** |
+| 2 | O modelo 'não apenas SQL' (NoSQL) restringe o modelo relacional por não permitir relacionamentos | **F** |
+| 3 | O modelo chave-valor é baseado em tabelas hash e um de seus bancos é o Redis | **V** |
+| 4 | O modelo colunar Tall-narrow (TN) codifica o Timestamp binário no ID e possui poucas linhas e muitas colunas | **F** |
+| 5 | O DynamoDB é um exemplo famoso de banco baseado em grafos | **F** |
+| 6 | Os modelos baseados em grafos são interessantes e bem aplicáveis em semântica web | **V** |
+| 7 | Uma família de colunas no HBase pode ser extraída a partir de um RowKey | **V** |
+| 8 | A linguagem de consulta cypher é a base para extrações no mongoDB | **F** |
+| 9 | Um TimeStamp é um valor de 64 bits no mongoDB e permite registrar os milissegundos desde 01.01.1970 até o instante da persistência do dado | **V** |
+| 10 | Um dicionário Python é um tipo admissível para persistência direta no mongoDB | **V** |
+| 11 | Um dicionário em Python pode ser transmitido sem transformação através do MQTT | **F** |
+| 12 | O MongoDB possui o limite de 100 níveis de documentos aninhados, com 16MB por documento | **V** |
+| 13 | Para documentos > 16 MB, uma solução é usar o GridFS do mongoDB, que divide o documento em coleções | **V** |
+
+### Explicação
+
+1. **F** → O modelo de grafos remete ao **modelo em rede (CODASYL)**, também pré-relacional dos anos 60. Nele os registros eram ligados por **links**, e os slides associam justamente esse modelo à ideia de grafo. O **modelo hierárquico** é uma **árvore** (cada filho tem um único pai), o que é mais restrito que um grafo.
+   > ⚠️ Os slides colocam hierárquico e rede juntos como "pré-relacionais (anos 60)". Se o professor considerar os dois como um mesmo grupo, ele pode aceitar V. Vale confirmar.
+2. **F** → NoSQL significa ***Not Only SQL*** ("não apenas SQL"). Ele não "restringe" o modelo relacional: é uma **alternativa** a ele. E os bancos NoSQL podem, sim, representar relacionamentos: os bancos de **grafos** são especializados nisso, e o MongoDB permite referências entre documentos.
+3. **V** → O modelo chave-valor funciona como uma **grande tabela hash**: cada chave aponta para um valor. O **Redis** é um dos exemplos mais conhecidos (outros: DynamoDB, Couchbase).
+4. **F** → É o contrário. O modelo **Tall-narrow** (alto e estreito) tem **muitas linhas e poucas colunas**: cada registro vira uma linha, e o *timestamp* é embutido na **RowKey** (ex.: `userID + timestamp`). O modelo com **poucas linhas e muitas colunas** é o **Flat-wide** (achatado e largo).
+5. **F** → O **DynamoDB** (Amazon) é um banco **chave-valor** (também orientado a documentos). Um exemplo famoso de banco de grafos é o **Neo4j**.
+6. **V** → Nos grafos, nós e arestas têm atributos e os relacionamentos têm direção. Isso representa bem as **ligações semânticas** entre conceitos, como na Web Semântica (RDF, ontologias).
+7. **V** → No HBase, o acesso aos dados é feito pela **RowKey**. A partir dela é possível obter uma família de colunas específica, ex.: `get 'tabela', 'rowkey', 'familia'`.
+8. **F** → **Cypher** é a linguagem de consulta do **Neo4j** (grafos). O MongoDB usa a sua própria **MQL** (*MongoDB Query Language*), com comandos como `find`, `updateMany` e `aggregate`.
+9. **V** → É a definição dos slides: *Timestamp: milissegundos desde 1.Jan.1970 (Unix Epoch) – 64 bits*.
+   > 💡 Tecnicamente, no BSON quem guarda milissegundos desde 1970 em 64 bits é o tipo **`Date`**. O tipo **`Timestamp`** também tem 64 bits, mas guarda **segundos** (32 bits) + um contador (32 bits), para uso interno do MongoDB. Para a prova, vale a definição do slide.
+10. **V** → Com o **pymongo**, um dicionário Python pode ser passado direto para `insert_one()`. O *driver* converte o dicionário para BSON automaticamente.
+11. **F** → O MQTT transmite a mensagem (*payload*) como **bytes/texto**. O dicionário precisa ser **serializado** antes, normalmente em **JSON** com `json.dumps()`. Do outro lado ele é convertido de volta com `json.loads()`. Os slides dizem: *mensagens podem ser encapsuladas em estrutura JSON (serialização) para transmissão*.
+12. **V** → Conforme os slides e a documentação oficial: tamanho máximo de **16 MB por documento** e até **100 níveis** de documentos aninhados.
+13. **V** → O **GridFS** é a solução do MongoDB para arquivos maiores que 16 MB.
+    > 💡 Mais precisamente, o GridFS divide o arquivo em **pedaços** (*chunks*, de 255 kB por padrão) e usa **duas coleções**: `fs.files` (metadados do arquivo) e `fs.chunks` (os pedaços). Se o professor for rigoroso com o "divide o documento em coleções", a justificativa é essa: divide em *chunks*, guardados em coleções.
