@@ -196,3 +196,21 @@ Essa questão testa a diferença entre comandos de **DDL** (Data Definition Lang
 | `INSERT`, `UPDATE`, `DELETE` | DML | Manipular os **dados/valores** dentro das tabelas |
 
 Como o objetivo é alterar o **valor** de um campo em uma linha específica (e não a estrutura da tabela), o comando correto é `UPDATE`, tornando a alternativa **b** a correta.
+
+## Questão 7
+
+### Explicação
+
+Os bancos NoSQL surgiram para lidar com grandes volumes de dados. O foco deles é a **escalabilidade horizontal** (distribuir os dados entre vários servidores) e o **alto desempenho** no acesso. Para isso, costumam abrir mão do modelo relacional e de parte das garantias ACID.
+
+- **a)** → Errado. NoSQL significa **"Not Only SQL"** ("não apenas SQL"). Não é um princípio teórico de nunca usar SQL, e vários bancos NoSQL até oferecem linguagens de consulta parecidas com SQL (ex.: CQL no Cassandra).
+- **b)** → Correto. Escalabilidade e desempenho no acesso aos dados são justamente a motivação central dos bancos NoSQL.
+- **c)** → Errado. É o contrário: **normalizar** para reduzir redundância é característica dos bancos **relacionais**. Em NoSQL é comum **desnormalizar** e duplicar dados de propósito para ganhar desempenho na leitura.
+
+### Conceito-chave
+
+| Aspecto | Relacional (SQL) | NoSQL |
+|---|---|---|
+| Escalabilidade | Principalmente vertical | Principalmente horizontal |
+| Modelagem | Normalizada | Frequentemente desnormalizada |
+| Esquema | Rígido | Flexível |
