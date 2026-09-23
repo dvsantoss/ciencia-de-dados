@@ -44,12 +44,12 @@ db.alunos.countDocuments({ mediaGeral: { $gte: 7 } })
 
 ### Operadores de comparação
 
-| Operador | Significado | Exemplo |
-|---|---|---|
-| `$eq` / `$ne` | igual / diferente | `{ mediaGeral: { $ne: 7 } }` |
-| `$gt` / `$gte` | maior / maior ou igual | `{ mediaGeral: { $gt: 9 } }` |
-| `$lt` / `$lte` | menor / menor ou igual | `{ mediaGeral: { $lt: 5 } }` |
-| `$in` / `$nin` | valor está / não está na lista | `{ mediaGeral: { $in: [7, 10] } }` |
+| Operador | Em inglês | Significado | Exemplo |
+|---|---|---|---|
+| `$eq` / `$ne` | *equal* / *not equal* | igual / diferente | `{ mediaGeral: { $ne: 7 } }` |
+| `$gt` / `$gte` | *greater than* / *greater than or equal* | maior / maior ou igual | `{ mediaGeral: { $gt: 9 } }` |
+| `$lt` / `$lte` | *less than* / *less than or equal* | menor / menor ou igual | `{ mediaGeral: { $lt: 5 } }` |
+| `$in` / `$nin` | *in* / *not in* | valor está / não está na lista | `{ mediaGeral: { $in: [7, 10] } }` |
 
 ### Operadores lógicos
 
@@ -158,3 +158,135 @@ Como só I e II estão corretas, a alternativa certa é a **b**.
 | Documentos | Documentos JSON/BSON/XML | MongoDB, CouchDB |
 | Colunar | Colunas / famílias de colunas | Cassandra, HBase |
 | Grafo | Vértices (nós) e arestas (relacionamentos) | Neo4j |
+
+## Questão 2
+
+**Enunciado:** Considerando os comandos disponíveis no shell do MongoDB e uma coleção de dados alunos não vazia, com atributos nome, mediaGeral e avaliacao, analise as seguintes afirmativas:
+
+I. O seguinte comando retorna uma lista vazia, uma vez que os critérios de busca não foram definidos:
+
+```js
+db.alunos.find( {} )
+```
+
+II. No comando abaixo, o programador colocou erroneamente o $in no lugar do $or para encontrar alunos baseado nos valores de sua nota média geral:
+
+```js
+db.alunos.find( { mediaGeral: { $in: [ 7, 10 ] } } )
+```
+
+III. Para atualizar na coleção alunos o atributo avaliação de todos os alunos com média maior que 9, podemos executar o seguinte comando:
+
+```js
+db.alunos.updateMany( { mediaGeral: { $gt: 9 } }, { $set: { avaliacao: "Ótimo desempenho!" } } )
+```
+
+IV. Para inserir um novo registro na coleção "alunos", podemos executar o seguinte comando:
+
+```js
+db.alunos.insertOne( { nome: "João", mediaGeral: 7, avaliacao: "Na média" } )
+```
+
+Estão corretas as afirmativas:
+
+a) I e II
+b) II e III
+c) III e IV
+d) I e IV
+
+**Resposta: c) III e IV**
+
+### Explicação
+
+- **I** → Errada. O filtro vazio `{}` significa "nenhuma restrição", então o `find({})` retorna **todos** os documentos da coleção. Como a coleção não está vazia, o resultado também não será vazio. É o equivalente a um `SELECT * FROM alunos` sem `WHERE`.
+- **II** → Errada. Não há erro no uso do `$in`. O comando busca alunos com `mediaGeral` **igual a 7 ou igual a 10**, o que dá o mesmo resultado de:
+  ```js
+  db.alunos.find({ $or: [ { mediaGeral: 7 }, { mediaGeral: 10 } ] })
+  ```
+  Quando as alternativas são valores de **um mesmo campo**, a própria documentação do MongoDB recomenda usar `$in` em vez de `$or`, porque é mais simples e mais eficiente. O `$or` é necessário quando as condições envolvem **campos diferentes**.
+- **III** → Correta. `updateMany` atualiza **todos** os documentos que casam com o filtro. O filtro `{ mediaGeral: { $gt: 9 } }` (*greater than*) seleciona quem tem média maior que 9, e o `$set` define o campo `avaliacao` com o novo valor. Se o `updateOne` fosse usado, só o primeiro aluno encontrado seria atualizado.
+- **IV** → Correta. `insertOne` insere **um** documento na coleção. O `_id` é gerado automaticamente pelo MongoDB.
+
+Como só III e IV estão corretas, a alternativa certa é a **c**.
+
+> 💡 **Ao testar no mongosh:** o PDF da lista usa aspas "curvas" (“ ”), vindas do editor de texto. Ao copiar os comandos para o shell, troque-as por aspas retas (`"`), senão dá erro de sintaxe.
+
+## Questão 3
+
+**Enunciado:** Classifique as bibliotecas abaixo em função de sua maior aplicabilidade/direcionamento, conforme classes abaixo:
+
+a) visualização, plotagem
+b) computação científica
+c) aquisição, tratamento e análise/consulta de dados
+d) aprendizagem de máquina
+e) big data
+
+**Resposta:**
+
+(**c**) Pandas
+(**b**) SciPy
+(**e**) Spark
+(**d**) pyTorch
+(**b**) NumPy
+(**d**) scikit-Learn
+(**e**) Hive
+(**a**) matplotlib
+(**a**) seaborn
+(**c**) pymongo
+(**d**) tensorFlow
+(**c**) Selenium
+
+### Explicação
+
+| Biblioteca | Classe | Por quê |
+|---|---|---|
+| **Pandas** | c) aquisição, tratamento e análise | Lê dados de CSV, Excel, SQL, JSON etc. e usa *DataFrames* para limpar, filtrar, agrupar e analisar |
+| **SciPy** | b) computação científica | Rotinas de otimização, integração, álgebra linear, estatística e processamento de sinais, construídas sobre o NumPy |
+| **Spark** | e) big data | Processamento distribuído **em memória** de grandes volumes de dados em clusters (Apache Spark / PySpark) |
+| **pyTorch** | d) aprendizagem de máquina | *Framework* de *deep learning* (redes neurais) criado pelo Facebook/Meta |
+| **NumPy** | b) computação científica | *Arrays* multidimensionais eficientes e operações matemáticas vetorizadas. É a base do Pandas, SciPy e scikit-learn |
+| **scikit-Learn** | d) aprendizagem de máquina | Algoritmos clássicos de ML: classificação, regressão, clusterização, validação de modelos |
+| **Hive** | e) big data | *Data warehouse* do ecossistema **Hadoop**, que permite consultar dados do HDFS com uma linguagem parecida com SQL (HiveQL) |
+| **matplotlib** | a) visualização | Biblioteca base de gráficos em Python (linhas, barras, dispersão, histogramas) |
+| **seaborn** | a) visualização | Construída sobre o matplotlib, voltada a gráficos estatísticos mais prontos e bonitos |
+| **pymongo** | c) aquisição e consulta | *Driver* oficial para acessar o **MongoDB** pelo Python: inserir, consultar e atualizar documentos |
+| **tensorFlow** | d) aprendizagem de máquina | *Framework* de *deep learning* criado pelo Google |
+| **Selenium** | c) aquisição de dados | Automatiza um navegador. Em ciência de dados é usado para ***web scraping***, coletando dados de páginas web (inclusive as dinâmicas, com JavaScript) |
+
+### Resumo por classe
+
+- **a) Visualização:** matplotlib, seaborn
+- **b) Computação científica:** NumPy, SciPy
+- **c) Aquisição, tratamento e análise/consulta:** Pandas, pymongo, Selenium
+- **d) Aprendizagem de máquina:** scikit-Learn, pyTorch, tensorFlow
+- **e) Big data:** Spark, Hive
+
+## Questão 4
+
+**Enunciado:** Entre as funcionalidades do NumPy, podemos destacar:
+
+a) tratamento flexível para dados ausentes
+b) melhor performance em seus arrays do que os tipos primitivos de Python
+c) facilita agregação de dados
+d) é um concorrente do Pandas
+
+**Resposta: b) melhor performance em seus arrays do que os tipos primitivos de Python**
+
+### Explicação
+
+- **a)** → Errada. O tratamento flexível de dados ausentes é característica do **Pandas**, com `isna()`, `fillna()`, `dropna()` etc. No NumPy, um `NaN` só existe em arrays de ponto flutuante e "contamina" os cálculos (ex.: `np.sum` de um array com `NaN` resulta em `NaN`).
+- **b)** → Correta. O `ndarray` do NumPy guarda elementos de **um único tipo** em um bloco **contíguo de memória** e executa as operações em código C compilado, de forma **vetorizada** (sem laço em Python). Por isso é muito mais rápido e ocupa menos memória que uma `list` do Python, que guarda referências para objetos espalhados na memória e pode misturar tipos.
+- **c)** → Errada. Agregação de dados (agrupar e resumir, como `groupby().sum()` ou `pivot_table`) é um ponto forte do **Pandas**. O NumPy até tem funções como `sum` e `mean`, mas não oferece agrupamento por categorias.
+- **d)** → Errada. NumPy e Pandas são **complementares**. O Pandas é construído **sobre** o NumPy: cada coluna de um `DataFrame` é, por baixo, um array do NumPy.
+
+### Exemplo
+
+```python
+import numpy as np
+
+lista = [1, 2, 3, 4]
+arr = np.array([1, 2, 3, 4])
+
+[x * 2 for x in lista]   # lista Python: precisa de laço → [2, 4, 6, 8]
+arr * 2                  # NumPy: operação vetorizada → array([2, 4, 6, 8])
+```
